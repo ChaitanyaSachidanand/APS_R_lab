@@ -1,0 +1,91 @@
+---
+  title: "R Data Types and Data Structures"
+output:
+  html_document:
+  df_print: paged
+editor_options:
+  chunk_output_type: console
+---
+  
+  **Sample code to find random 30 DOB**
+```{r}
+
+#set.seed(1) # random number will generate from 1
+Random30 = sample.int(365, 30)
+length(Random30)
+mean(Random30)
+table(Random30)
+```
+**Function which creates Random 30 DOB
+```{r}
+Random30people = function(){
+  # return(sample.int(365,30))
+  return(sample(1:365, 30, replace=TRUE))
+}
+
+```
+```{r}
+table(Random30people())
+```
+
+
+```{r}
+nsimuationss=100000 #100 simulation of Judges results
+simulatedData = replicate(nsimuationss,Random30people())
+```
+
+**Sample code to check if data mentioned is there**  
+```{r}
+dim(simulatedData)
+simulatedData[,1]
+c=simulatedData[simulatedData == 907]
+print(c)
+```
+```{r}
+# checkEvent = function(data_num){
+#   count_n=0
+#   for(i in data_num){
+#       if(data_num[data_num == i]){
+#         count_n=count_n+1
+#       }
+#     }
+#     
+#     print(count_n)
+# }
+
+```
+```{r}
+# checkEvent(simulatedData[,1])
+```
+**Gives the frequency count of simulated data**
+```{r}
+table(simulatedData[,1])
+```
+
+```{r}
+apply(simulatedData,2,table)
+```
+
+**This is the part where i tried to print get count of 30student where birthday repeats but im not able to do it**
+```{r}
+zzz=apply(simulatedData, 2,table)
+```
+
+```{r}
+# Function to check if all birthdays are unique
+checkEvent = function(data){
+  if (length(unique(data)) == 30){
+    return(1)
+  }
+  else{
+    return(0)
+  }
+}
+```
+
+```{r}
+print(checkEvent(zzz))
+```
+
+
+  

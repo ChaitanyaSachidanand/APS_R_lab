@@ -1,0 +1,165 @@
+---
+  title: "R Data Types and Data Structures"
+output:
+  html_document:
+  df_print: paged
+editor_options:
+  chunk_output_type: console
+---
+
+```{r}
+dfPatients= read.csv('Data/emergency.csv')
+```
+
+## way to chect the data type
+
+```{r}
+str(dfPatients)
+```
+
+```{r}
+dfPatients
+
+```
+
+```{r}
+str(dfPatients$Condition)
+
+```
+
+## Different way to access
+
+```{r}
+dfPatients$Condition
+str(dfPatients$Condition)
+```
+
+```{r}
+dfPatients[['Condition']]
+str(dfPatients[['Condition']])
+```
+
+```{r}
+dfPatients['Condition']
+str(dfPatients['Condition'])
+```
+
+```{r}
+dfPatients[,'Condition']
+str(dfPatients[,'Condition'])
+```
+
+```{r}
+dfPatients[2]
+str(dfPatients[2])
+```
+
+##How to acces and chech value of column
+
+```{r}
+dfPatients[2]=='serious'
+
+```
+
+```{r}
+dfPatients[dfPatients[2]=='serious'] ## Shows only the secfied value of that coloum
+```
+
+```{r}
+dfPatients[dfPatients[2]=='serious',]## Shows all colums where they are specfied value
+
+```
+
+## 
+
+```{r}
+sum(dfPatients$Condition=='serious')
+```
+
+```{r}
+mean(dfPatients$Condition=='serious')
+```
+
+```{r}
+median(dfPatients$Condition=='serious')
+```
+
+```{r}
+dfPatients$Insurance
+```
+
+```{r}
+mode(dfPatients$Condition=='serious')
+```
+
+###My own experiment \# `{r} #  # serious_p=mean(dfPatients$Condition=='serious') # fair_p=mean(dfPatients$Condition=='fair') # good_p=mean(dfPatients$Condition=='good') # p=c(serious_p,fair_p,good_p) # print(p) #` \# `{r} # serious_p=mean(dfPatients$Insurance=='insured') # fair_p=mean(dfPatients$Insurance=='not insured') #  # p=c(serious_p,fair_p) # print(p) #  #` \# \# `{r} #  # s=c(1,0) # print(s) #` \# `{r} #  # aaaaa=sample(s, size = 100, replace = TRUE, prob = p) # sum(aaaaa) #  #`
+
+## 
+
+```{r}
+dfPatients$Condition=factor(dfPatients$Condition)
+```
+
+```{r}
+# not so good methord to change since all values get changed
+read.csv("Data/emergency.csv",row.names=1,stringsAsFactors = TRUE)
+```
+
+#Types of Catagorical vales \## Binary \## Multivalue \## Ordinal
+
+# Best way to do it
+
+```{r}
+
+dfPatients=read.csv("Data/emergency.csv",row.names=1)
+```
+
+```{r}
+contineous_features=c()
+catagorical_col=c('Condition','Insurance')
+```
+
+```{r}
+dfPatients[,catagorical_col] = lapply(dfPatients[,catagorical_col] , factor)
+str(dfPatients)
+```
+
+```{r}
+
+str(dfPatients)
+```
+
+```{r}
+# c('serious','insured')
+sum(dfPatients[dfPatients$Condition=='serious',]$Insurance=='insured')
+```
+
+```{r}
+mean(dfPatients[dfPatients$Condition=='serious',]$Insurance=='insured')
+
+```
+
+## Logacal operator in R
+
+```{r}
+vec1=c(TRUE,FALSE,TRUE,TRUE,FALSE,TRUE)
+vec2=c(FALSE,TRUE)
+vec2&vec1
+```
+## the operation & is performed to do intersection
+```{r}
+
+mean(dfPatients$Condition=='serious' & dfPatients$Insurance=='insured')
+
+```
+##defrving formula for conditional probablity
+```{r}
+mean(dfPatients$Condition=='serious' & dfPatients$Insurance=='insured')/mean(dfPatients$Insurance=='insured')
+```
+####it is simlar to
+```{r}
+
+mean(dfPatients[dfPatients$Insurance=='insured',]$Condition=='serious')
+```
+
+

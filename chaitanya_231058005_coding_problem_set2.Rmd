@@ -1,0 +1,85 @@
+---
+title: "bur_ridership"
+author: '''Chaitanya Sachidanand'',''Sudhanva HG'',''Dhruva Nayak'''
+date: "2023-08-29"
+output: pdf_document
+editor_options:
+  chunk_output_type: console
+html_document:
+  df_print: paged
+---
+
+# 1. Consider the following model for a bus-ridership analysis: ### at
+each stop, each passenger is likely to get off the bus independent of
+others with a 20% chance; 
+
+## at every stop, there is a 50%/40%/10% chance of 0/1/2 passengers getting on board; 
+
+## the bus never gets full; new passengers at any stop can always be accommodated;
+
+## bus is empty when it arrives at the first stop. 
+
+Write an R code to calculate using simulation the probability that the bus is empty after visiting the tenth stop.
+
+
+### Code to simulate entering and exiting the bus by useing sample and probablity
+
+```{r}
+entering_bus = function(){
+  
+  return(sample(c(0,1,2),size = 1,prob = c(0.50,0.40,0.10)))
+}
+exiting_bus = function(){
+  return(sample(c(1,0),size = 1,prob = c(0.20,0.80)))
+}
+
+```
+
+### Code to test the function
+
+```{r}
+entering_bus()
+exiting_bus()
+```
+
+### code to simulate the exinting and entring the bus till 10 stops
+
+```{r}
+bus_10Passenger = function(){
+  bus_seat=c()
+  for (j in c(1:10)) {
+    if (j == 1) {
+      # c(x, "b")
+      bus_seat=c(bus_seat,entering_bus())
+    }
+    else if(bus_seat[j-1]==0){
+    bus_seat=c(bus_seat,entering_bus())
+    }
+    else {
+    bus_seat=c(bus_seat,bus_seat[j-1]+entering_bus()-exiting_bus())
+    # bus_seat
+    }
+  }
+  return(bus_seat)
+}
+
+```
+
+running 100000 simulation people entering and exiting the bus
+
+```{r}
+nsimuationss=100000
+simulatedData = replicate(nsimuationss,bus_10Passenger())
+```
+
+count of no entries present in the 10th stop
+
+```{r}
+table(simulatedData[10,])
+```
+
+probablity that the bus is empty at 10th stop
+
+```{r}
+sum(simulatedData[10,]==0)/length(simulatedData[10,])
+```

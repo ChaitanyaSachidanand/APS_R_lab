@@ -1,0 +1,176 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*.
+
+```{r}
+
+library(ggplot2)
+plot(cars)
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+
+
+
+#### Read DATA
+
+```{r}
+foodData = read.csv('Data/food-texture.csv',header = TRUE,row.names = 1)
+head(foodData)
+```
+#### what kind of data within the datafame
+```{r}
+typeof(foodData)
+```
+
+```{r}
+class(foodData)
+```
+#### very important function to know our data
+```{r}
+str(foodData)
+```
+#### Attributes of dataframe
+```{r}
+nrow(foodData)
+ncol(foodData)
+
+```
+```{r}
+rownames(foodData)
+```
+
+```{r}
+
+colnames(foodData)
+```
+### how to access data in R datafroame
+foodData$oil
+foodData[['oil]]
+foodData[,'oil']
+-----till here they give vector
+foodData['oil']
+-----it give dataframe as output
+```{r}
+foodData$Oil
+```
+```{r}
+foodData[['Oil']]
+```
+```{r}
+foodData[,'Oil']
+```
+```{r}
+foodData['Oil']
+```
+
+```{r}
+foodData[,1]
+```
+
+#### Factor data structure in R
+
+```{r}
+gender = c('Male', 'Female', 'Male','Male')
+str(gender)
+fact_gnender=(factor(gender))
+fact_gnender
+```
+```{r}
+str(fact_gnender)
+levels(fact_gnender)
+```
+#### Add new column called tast with levels 1-poor, 2-fair,3-good, 4-excellent
+```{r}
+# foodData['Taste']=factor(sample(c('poor','fair','good','excellent'),nrow(foodData),replace = TRUE, p=c(0.25,0.25,0.25,0.25)))
+# head(foodData)
+```
+```{r}
+# write.csv(foodData,'Data/food-texture.csv')
+```
+#### Create list of contineous and catagorical features 
+```{r}
+contineuos_cols = c( "Oil","Density","Fracture","Hardness" )
+catagorical_cols= c("Taste","Crispy")
+```
+#### all catagorical colums in on shot to factor type(catagorical data type of R)
+```{r}
+foodData[catagorical_cols]=lapply(foodData[catagorical_cols],factor)
+```
+```{r}
+str(foodData)
+```
+#### GGplot canvs
+```{r}
+p= ggplot(data = foodData)
+p
+```
+#### Viz and Understand the relationship b/w 2 contineous variables(scatter plot): oil and density 
+```{r}
+p = ggplot(data = foodData)+ 
+  geom_point(aes(x= Density,y= Oil))
+p
+```
+#### Addding the colour asethetic to plot
+```{r}
+p = ggplot(data = foodData)+ 
+  geom_point(aes(x= Density,y= Oil, color = Crispy))
+p
+```
+```{r}
+
+p = ggplot(data = foodData)+ 
+  geom_point(aes(x= Density,y= Oil, size = Crispy))
+p
+```
+```{r}
+
+p = ggplot(data = foodData)+ 
+  geom_point(aes(x= Density,y= Oil, size = Crispy,color=Crispy))
+p
+```
+
+#### Viz and Understand the relationship b/w  contineous variables and catagorical(box plot): crispy and density  
+```{r}
+p = ggplot(data = foodData)+ 
+  geom_boxplot(aes(x= Crispy,y= Density))
+p
+```
+#### udesstanding whats inside a box plot
+```{r}
+foodData$Density
+foodData$Crispy== 10
+foodData[foodData$Crispy==10, ]
+foodData[foodData$Crispy==10 & foodData$Oil <=17, ]
+foodData[foodData$Crispy==10, 'Density' ]
+foodData[foodData$Crispy==10, c('Density','Hardness') ]
+
+desnity10 = foodData[foodData$Crispy==10, 'Density' ]
+desnity11 = foodData[foodData$Crispy==11, 'Density' ]
+
+```
+```{r}
+str(desnity10)
+desnity10#
+desnity10-mean(desnity10)#mean centered density vector
+(desnity10-mean(desnity10))^2 ##mean squared centered density vector
+mean((desnity10-mean(desnity10))^2)#mean of squared mean centered density vector
+#also known as varinace
+sqrt(mean((desnity10-mean(desnity10))^2))#SD of the vector
+var(desnity10)#variance using inbult function
+sd(desnity10)#Standard deviation using inbult function
+```
+
